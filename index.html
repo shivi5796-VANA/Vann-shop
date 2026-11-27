@@ -333,6 +333,17 @@ ol.tl{list-style:none;margin:16px 0 8px;padding:0 16px}.tl li{display:flex;gap:1
 /* stock from the host app */
 .pc{position:relative}.pc.so .im{opacity:.5}.pc .sold{position:absolute;top:10px;left:10px;z-index:2;background:#24322a;color:#fff;font-size:11px;font-weight:800;padding:3px 8px;border-radius:8px}
 
+/* DIY & gift ideas, profile */
+.idc{flex:none;width:168px;scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;text-align:left;display:flex;flex-direction:column}
+.idc .ia{background:var(--soft);aspect-ratio:1/1;display:grid;place-items:end center;padding:8px 14px 0}.idc .ia svg{width:82%;height:auto;display:block}
+.idc .it{padding:10px 12px 12px;display:flex;flex-direction:column;gap:2px}.idc b{font-size:15px;line-height:1.2}.idc small{color:var(--muted);font-size:12.5px}
+.idc .hi,.hiline{font-family:var(--hi);font-weight:600;color:var(--brand)}.idc .hi{font-size:13px}.hiline{font-size:18px}
+.idgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:0 16px}.idgrid .idc{width:auto}
+.need{list-style:none;padding:0 16px;margin:0;display:grid;gap:10px}.need li{display:flex;gap:10px;align-items:flex-start}.need li .ic{color:var(--leaf);width:20px;height:20px;margin-top:2px}
+.steps{counter-reset:st;list-style:none;padding:0 16px;margin:0;display:grid;gap:12px}.steps li{counter-increment:st;display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start}
+.steps li::before{content:counter(st);width:32px;height:32px;border-radius:50%;background:var(--soft);color:var(--brand);font-weight:800;display:grid;place-items:center}
+.dt{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 44px;gap:0 8px;padding:0 16px 8px;align-items:end;border-bottom:1px solid var(--line);margin-bottom:8px}
+.dt .fld{padding:0}.dt .dd{grid-column:1/3}.dt .ib{margin-bottom:6px}
 </style>
 </head>
 <body>
@@ -659,7 +670,15 @@ const CARE = [
  {id:'c-can',n:'Watering Can · 1.5 L',pr:299,ic:'can',col:'#2c7a80',d:'Long spout reaches the back of shelves and hangers.'},
  {id:'c-stand',n:'Iron Plant Stand · 3 tier',pr:1299,ic:'stand',col:'#2b2b2b',d:'Holds three medium pots in one corner.'},
  {id:'c-pebbles',n:'White Pebbles · 1 kg',pr:149,ic:'pebbles',col:'#e8e4dc',d:'Top dressing that keeps soil cool and gnats away.'},
- {id:'c-moss',n:'Coir Moss Stick · 2 ft',pr:199,ic:'stick',col:'#8a6a3a',d:'Support pole for monstera, money plant and philodendron.'}
+ {id:'c-moss',n:'Coir Moss Stick · 2 ft',pr:199,ic:'stick',col:'#8a6a3a',d:'Support pole for monstera, money plant and philodendron.'},
+ {id:'c-diy-tubes',n:'Test-tube Fridge Magnet Kit · 3 tubes',pr:299,ic:'tubes',col:'#2E7D32',diy:1,d:'3 unbreakable plastic tubes on a magnetic strip, 3 money plant cuttings, jute and name tags.'},
+ {id:'c-diy-rack',n:'Hanging Test-tube Rack · 5 tubes',pr:449,ic:'rack',col:'#a8743f',diy:1,d:'Wooden strip with 5 plastic tubes and jute rope. Turns any window into a cutting nursery.'},
+ {id:'c-diy-kulhad',n:'Kulhad Succulent Kit · 4 kulhads',pr:399,ic:'kulhad',col:'#b5552f',diy:1,d:'4 clay kulhads, succulent mix, white pebbles, jade cuttings, jute bows and tags.'},
+ {id:'c-diy-jar',n:'Jar Garden Kit',pr:549,ic:'jar',col:'#8fbfb0',diy:1,d:'Wide glass jar, pebbles, charcoal, potting mix, moss and two baby plants.'},
+ {id:'c-diy-koke',n:'Kokedama Kit · 2 balls',pr:399,ic:'koke',col:'#5d7a3a',diy:1,d:'Kokedama soil mix, sheet moss, jute twine and 2 money plant or syngonium plants.'},
+ {id:'c-diy-coco',n:'Coconut Shell Planter Kit · 2 shells',pr:299,ic:'coco',col:'#6b4523',diy:1,d:'2 cleaned coconut shells with drainage holes, jute hangers, potting mix and 2 plants.'},
+ {id:'c-diy-seed',n:'Seed Paper Card Kit · 10 cards',pr:249,ic:'seedcard',col:'#efe4cf',diy:1,d:'Paper pulp with marigold seeds, a mould and 10 envelopes. Makes cards that grow.'},
+ {id:'c-diy-herb',n:'Windowsill Herb Kit · 3 herbs',pr:349,ic:'herb',col:'#2E7D32',diy:1,d:'Tray with 3 pots, potting mix, and dhaniya, methi and tulsi seeds.'}
 ];
 
 /* ---------- Tag & label dictionaries ---------- */
@@ -1266,6 +1285,8 @@ function care(cp,o={}){
   const c=cp.col,[nm,qty]=cp.n.split(' · ');let g=`<ellipse cx="100" cy="248" rx="60" ry="6" fill="#000" opacity=".1"/>`;
   const lbl=(x,y,w,h,s)=>{const L=wrapWords(nm,Math.round(w/(s*.52)));let t=`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${f(w*.1)}" fill="#fbf7ee"/>`+vnEn(x+w*.18,y+h*.07,w*.64,INK);
     L.forEach((l,i)=>t+=txt(x+w/2,y+h*.56+i*s*1.15,fit(l,s,w*.9),'#24322a',l,{w:800}));if(qty)t+=`<rect x="${f(x+w*.26)}" y="${f(y+h*.79)}" width="${f(w*.48)}" height="${f(s*1.35)}" rx="${f(s*.6)}" fill="${INK}"/>`+txt(x+w/2,y+h*.79+s*1.02,s*.86,'#F4EEE2',qty,{w:700});return t};
+  const HL=(x,y,s,a,col)=>`<path d="M0 0C-5 -5 -11 -2 -10 5C-8 10 -2 12 0 16C2 12 8 10 10 5C11 -2 5 -5 0 0Z" fill="${col}" transform="translate(${f(x)} ${f(y)}) rotate(${f(a)}) scale(${s})"/>`;
+  const TUBE=(x,y,h)=>`<rect x="${x-8}" y="${y}" width="16" height="${h}" rx="8" fill="#ffffff" fill-opacity=".6" stroke="#aebfc4" stroke-width="1.5"/><rect x="${x-6.5}" y="${f(y+h*.35)}" width="13" height="${f(h*.62)}" rx="6.5" fill="#bfe3f0" opacity=".85"/><path d="M${x} ${y+h-9}l-4 6M${x} ${y+h-9}l3 7M${x} ${y+h-11}l-5 2" stroke="#efe6cf" stroke-width="1.4" fill="none"/><path d="M${x} ${y+h-9}C${x-2} ${f(y+h*.5)} ${x+3} ${y+10} ${x+1} ${y-26}" stroke="#4f8f3a" stroke-width="2.6" fill="none" stroke-linecap="round"/>`+HL(x+1,y-30,1.05,205,'#3f8f3a')+HL(x-1,y-14,.95,125,'#5aa64a')+HL(x+2,y+2,.85,230,'#4f9a45');
   switch(cp.ic){
   case'bag':g+=`<path d="M56 70Q100 58 144 70L152 244H48Z" fill="${c}"/><path d="M56 70Q100 58 144 70L146 92Q100 82 54 92Z" fill="${tone(c,.15)}"/>${lbl(62,112,76,92,9.5)}`;break;
   case'bottle':g+=`<rect x="72" y="112" width="56" height="132" rx="14" fill="${c}"/><rect x="86" y="92" width="28" height="24" fill="#2b2b2b"/><path d="M80 70H124V96H86Z" fill="#3a3a3a"/><path d="M124 74H142V82H124Z" fill="#3a3a3a"/><path d="M96 96L88 124" stroke="#555" stroke-width="5"/>${lbl(77,140,46,76,6.4)}`;break;
@@ -1274,7 +1295,30 @@ function care(cp,o={}){
   case'can':g+=`<rect x="54" y="120" width="88" height="110" rx="16" fill="${c}"/><path d="M142 150L184 98" stroke="${c}" stroke-width="10" stroke-linecap="round"/><ellipse cx="186" cy="96" rx="8" ry="5" fill="${tone(c,-.2)}"/><path d="M68 120Q98 70 128 120" stroke="${tone(c,-.15)}" stroke-width="9" fill="none"/><rect x="62" y="140" width="10" height="70" rx="5" fill="#fff" opacity=".2"/>`+vnEn(70,156,58,'#F4EEE2')+(qty?txt(99,206,9,'#F4EEE2',qty,{w:700,op:.85}):'');break;
   case'stand':g+=`<path d="M60 240L80 70M140 240L120 70M66 190H134M72 140H128M78 92H122" stroke="${c}" stroke-width="5" fill="none"/>`;for(const[y,x]of[[190,100],[140,100],[92,100]])g+=`<path d="M${x-18} ${y-24}H${x+18}L${x+13} ${y}H${x-13}Z" fill="#c8693f"/>`+leaf(x,y-24,20,8,-30,'#3f8f3a')+leaf(x,y-24,20,8,30,'#4f9a45');g+=hangTag(126,92,12);break;
   case'pebbles':{g+=`<path d="M40 180Q100 250 160 180Z" fill="#c8693f"/>`;const r=rng(9);for(let i=0;i<34;i++){const x=56+r()*88,y=150+r()*34;g+=`<ellipse cx="${f(x)}" cy="${f(y)}" rx="${f(7+r()*4)}" ry="${f(5+r()*2)}" fill="${['#f5f2ec','#e3ddd2','#cfc8bc'][i%3]}"/>`}g+=vnEn(80,188,40,'#F4EEE2');break}
-  case'stick':g+=`<rect x="88" y="36" width="24" height="206" rx="10" fill="${c}"/>`;for(let y=48;y<236;y+=10)g+=`<path d="M90 ${y}l20 4" stroke="${tone(c,-.25)}" stroke-width="2"/>`;g+=hangTag(110,58,10);break}
+  case'stick':g+=`<rect x="88" y="36" width="24" height="206" rx="10" fill="${c}"/>`;for(let y=48;y<236;y+=10)g+=`<path d="M90 ${y}l20 4" stroke="${tone(c,-.25)}" stroke-width="2"/>`;g+=hangTag(110,58,10);break
+  case'tubes':g+=`<rect x="30" y="16" width="140" height="232" rx="16" fill="#e8eef0" stroke="#cfd9dc" stroke-width="2"/><rect x="150" y="36" width="8" height="74" rx="4" fill="#c4ced2"/><rect x="44" y="104" width="112" height="14" rx="5" fill="${c}"/>`+TUBE(66,112,88)+TUBE(100,112,88)+TUBE(134,112,88);break;
+  case'rack':g+=`<path d="M40 98L100 26L160 98" stroke="#b38a55" stroke-width="3" fill="none"/><circle cx="100" cy="24" r="5" fill="none" stroke="#8a6a3a" stroke-width="2"/><rect x="28" y="94" width="144" height="18" rx="5" fill="${c}"/><rect x="28" y="106" width="144" height="6" rx="3" fill="${tone(c,-.2)}"/>`;for(const x of[46,73,100,127,154])g+=TUBE(x,108,78);break;
+  case'kulhad':for(const[x,yb,s]of[[52,244,1],[148,244,1],[100,226,1.12]]){const w1=24*s,w2=17*s,h=50*s;
+    for(const[a,l]of[[-65,15],[-32,18],[0,20],[32,18],[65,15]])g+=leaf(x,yb-h-2,l*s,8*s,a,a?'#5f9e4a':'#4f8f3a');
+    g+=`<path d="M${f(x-w1)} ${f(yb-h)}H${f(x+w1)}L${f(x+w2)} ${yb}H${f(x-w2)}Z" fill="${c}"/><ellipse cx="${x}" cy="${f(yb-h)}" rx="${f(w1)}" ry="${f(5*s)}" fill="${tone(c,.18)}"/><ellipse cx="${x}" cy="${f(yb-h+1)}" rx="${f(w1-5)}" ry="${f(3*s)}" fill="#f3efe6"/><path d="M${f(x-w1+4)} ${f(yb-h*.55)}Q${x} ${f(yb-h*.4)} ${f(x+w1-4)} ${f(yb-h*.55)}" stroke="#d6b98a" stroke-width="2" fill="none"/>`}break;
+  case'jar':{g+=`<rect x="42" y="66" width="116" height="178" rx="28" fill="#e9f4f1" fill-opacity=".8" stroke="${tone(c,-.15)}" stroke-width="3"/><path d="M45 214Q100 222 155 214V222Q155 241 130 241H70Q45 241 45 222Z" fill="#cfc8bc"/>`;const r=rng(4);for(let i=0;i<26;i++)g+=`<ellipse cx="${f(52+r()*96)}" cy="${f(220+r()*16)}" rx="${f(4+r()*3)}" ry="${f(3+r()*2)}" fill="${['#e3ddd2','#bdb5a8','#f5f2ec'][i%3]}"/>`;
+    g+=`<path d="M45 204Q100 210 155 204V214Q100 222 45 214Z" fill="#3a3a3a"/><path d="M45 170Q100 160 155 170V204Q100 210 45 204Z" fill="#6b4a35"/>`;for(const a of[-50,-20,10,40])g+=leaf(80,170,26,10,a,'#3f8f3a');for(const a of[-35,0,35])g+=leaf(122,170,20,12,a,'#5aa64a');
+    g+=`<path d="M48 170Q70 160 92 168Q112 158 152 170Q100 176 48 170Z" fill="#6f9b3a"/><rect x="56" y="48" width="88" height="22" rx="8" fill="#d9e7e3" stroke="${tone(c,-.15)}" stroke-width="2.5"/><rect x="54" y="86" width="8" height="110" rx="4" fill="#fff" opacity=".55"/>`;break}
+  case'koke':{g+=`<path d="M100 14L62 140M100 14L138 140M100 14V120" stroke="#b38a55" stroke-width="2.4" fill="none"/><circle cx="100" cy="12" r="5" fill="none" stroke="#8a6a3a" stroke-width="2"/><circle cx="100" cy="182" r="56" fill="${c}"/>`;const r=rng(5);for(let i=0;i<40;i++)g+=`<circle cx="${f(58+r()*84)}" cy="${f(142+r()*80)}" r="${f(1.5+r()*2)}" fill="${tone(c,r()>.5?.18:-.18)}"/>`;
+    for(const a of[0,55,-55])g+=`<ellipse cx="100" cy="182" rx="56" ry="17" fill="none" stroke="#d6b98a" stroke-width="2.2" transform="rotate(${a} 100 182)"/>`;
+    for(const[a,s,col]of[[-62,1.5,'#3f8f3a'],[-24,1.75,'#4f9a45'],[24,1.6,'#3f8f3a'],[62,1.4,'#5aa64a'],[0,1.55,'#2f7a32']])g+=HL(100,130,s,180+a,col);break}
+  case'coco':{g+=`<path d="M46 150L100 30L154 150" stroke="#b38a55" stroke-width="2.4" fill="none"/><circle cx="100" cy="28" r="5" fill="none" stroke="#8a6a3a" stroke-width="2"/>`;
+    for(const[a,l]of[[-80,20],[80,20],[-55,26],[55,26],[-25,30],[25,30],[0,34]])g+=leaf(100,150,l,9,a,Math.abs(a)%50?'#4f9a45':'#3f8f3a');
+    g+=`<path d="M38 150Q40 232 100 236Q160 232 162 150Z" fill="${c}"/>`;for(let i=0;i<9;i++)g+=`<path d="M${52+i*12} 162Q${50+i*12} 196 ${60+i*10} 226" stroke="${tone(c,-.25)}" stroke-width="2" fill="none" opacity=".6"/>`;
+    g+=`<ellipse cx="100" cy="150" rx="62" ry="13" fill="#efe6d2"/><ellipse cx="100" cy="151" rx="54" ry="9" fill="#5a3e2b"/>`;break}
+  case'seedcard':{g+=`<g transform="rotate(-8 100 150)"><rect x="34" y="96" width="132" height="92" rx="6" fill="#c9a06a"/><path d="M34 100L100 146L166 100" stroke="#b38a55" stroke-width="2" fill="none"/></g><g transform="rotate(6 100 160)"><rect x="40" y="118" width="124" height="100" rx="6" fill="${c}" stroke="#dccdb0" stroke-width="1.5"/>`;const r=rng(7);for(let i=0;i<40;i++)g+=`<ellipse cx="${f(48+r()*108)}" cy="${f(126+r()*84)}" rx="${f(1.2+r()*1.6)}" ry="${f(.8+r())}" fill="${['#7a5a3a','#3a2718','#d9a13a'][i%3]}"/>`;
+    for(let i=0;i<10;i++){const a=i*36*Math.PI/180;g+=`<circle cx="${f(102+9*Math.cos(a))}" cy="${f(152+9*Math.sin(a))}" r="6.5" fill="#F9C84A"/>`}g+=`<circle cx="102" cy="152" r="5" fill="#e0901f"/>`+txt(102,196,12,INK,'बीज · Grow me',{w:800})+`</g>`;break}
+  case'herb':{g+=`<path d="M26 206H174L166 240H34Z" fill="#a8743f"/><rect x="26" y="200" width="148" height="10" rx="3" fill="#bf8a52"/>`;
+    for(const[x,kind,lab]of[[58,'d','DHANIYA'],[100,'m','METHI'],[142,'t','TULSI']]){
+      if(kind==='d')for(const[a,l]of[[-40,22],[-12,26],[14,24],[40,20]]){const ex=x+Math.sin(a*Math.PI/180)*l,ey=176-Math.cos(a*Math.PI/180)*l;g+=`<path d="M${x} 176L${f(ex)} ${f(ey)}" stroke="#4f8f3a" stroke-width="1.6"/><circle cx="${f(ex)}" cy="${f(ey)}" r="5.5" fill="#5aa64a"/><circle cx="${f(ex-4)}" cy="${f(ey+3)}" r="4" fill="#4f9a45"/>`}
+      else if(kind==='m')for(const a of[-50,-25,0,25,50])g+=leaf(x,176,20,9,a,'#6aa84f');
+      else{g+=`<path d="M${x} 176V138" stroke="#5b6b3a" stroke-width="2"/>`+leaf(x,166,18,9,-55,'#3f7f3a')+leaf(x,166,18,9,55,'#3f7f3a')+leaf(x,152,14,7,-45,'#4a8a3f')+leaf(x,152,14,7,45,'#4a8a3f')+leaf(x,140,10,5,0,'#5a9a45')}
+      g+=`<path d="M${x-18} 172H${x+18}L${x+14} 204H${x-14}Z" fill="#c0643b"/><rect x="${x-20}" y="168" width="40" height="7" rx="2" fill="#a9532f"/>`+txt(x,226,7.5,'#F4EEE2',lab,{w:800,ls:.6})}break}}
   return svg(g,'0 0 200 260',o);
 }
 
@@ -1438,6 +1482,7 @@ const seasonFactor=()=>({summer:.7,monsoon:1.3,winter:1.4})[SEASON.id];
 const LS='hariyali-prototype-v1';
 const S=Object.assign({anim:true,cart:[],wish:[],saved:[],orders:[],garden:[],fb:[],survey:{feats:[],where:[]},tester:'',onboarded:false,city:'Delhi NCR',coupon:'',reqs:[],addr:{},tickets:[]},(()=>{try{return JSON.parse(localStorage.getItem(LS)||'{}')}catch(e){return{}}})());
 const save=()=>{try{localStorage.setItem(LS,JSON.stringify(S))}catch(e){}};
+if(!S.profile||typeof S.profile!=='object')S.profile={};if(!Array.isArray(S.profile.dates))S.profile.dates=[];if(!Array.isArray(S.profile.space))S.profile.space=[];
 /* Host app link (same phone): stock, hidden items, price changes and order status set in /admin */
 const HLS='vana-host-v1',API=BRAND.apiUrl||'',SCK='vana-stock-cache';let HOST={};const loadHost=()=>{try{HOST=API?{on:true,inv:JSON.parse(localStorage.getItem(SCK)||'{}')}:JSON.parse(localStorage.getItem(HLS)||'{}')}catch(e){HOST={on:!!API}}HOST.inv=HOST.inv||{};
   for(const[key,v]of Object.entries(HOST.inv)){const[k,id]=key.split(':');const it=KIND[k]&&KIND[k][id];if(!it)continue;if(it._pr==null)it._pr=it.pr;it.pr=v.price!=null?v.price:it._pr}};
@@ -1479,7 +1524,7 @@ function addCart(l,quiet){l={qty:1,...l};const inCart=(k,id)=>S.cart.filter(x=>x
   try{navigator.vibrate&&navigator.vibrate(12)}catch(e){}const ex=S.cart.find(x=>x.key===l.key);if(ex)ex.qty+=l.qty;else S.cart.push(l);save();updateBadge();if(!quiet)toast(`Added ${KIND[l.k][l.id].n} to cart`)}
 const cartCount=()=>S.cart.reduce((a,l)=>a+l.qty,0);
 const COUPONS={GREEN10:{d:'10% off your order',f:s=>s*.1},FIRSTPLANT:{d:'₹100 off orders above ₹499',f:s=>s>=499?100:0}};
-const getCoupon=c=>COUPONS[c]||(/^VANN?A[A-Z]{2,}$/.test(c||'')?{d:'Referral: ₹100 off orders above ₹499',f:s=>s>=499?100:0}:null);
+const getCoupon=c=>COUPONS[c]||(/^(VANN|VANA)[A-Z]{2,}$/.test(c||'')?{d:'Referral: ₹100 off orders above ₹499',f:s=>s>=499?100:0}:null);
 function totals(){const sub=S.cart.reduce((a,l)=>a+l.price*l.qty,0);const c=getCoupon(S.coupon);const disc=c?Math.round(c.f(sub)):0;const after=sub-disc;const del=sub===0||after>=499?0:49;const gift=R.co.gift?49:0;return{sub,disc,del,gift,total:after+del+gift}}
 function lineName(l){const it=KIND[l.k][l.id];if(l.k==='plant')return`${SZ(l.size).n} · ${l.pot&&l.pot!=='none'?'with '+PO[l.pot].n:'Plant only (nursery pot)'}`;if(l.k==='pot')return`${SZ(l.size).n} · ${it.m}`;return l.k==='seed'?'Seed packet':'Garden care'}
 function eta(pin){if(!/^\d{6}$/.test(pin||''))return null;const fast=['11','12','20','40','41','56','60','70','50','38','30','14','16','68'].includes(pin.slice(0,2));const d=new Date();d.setDate(d.getDate()+(fast?2:5));return{fast,txt:(fast?'Express · ':'Standard · ')+'arrives by '+d.toLocaleDateString('en-IN',{weekday:'short',day:'numeric',month:'short'})}}
@@ -1514,13 +1559,15 @@ V.home=()=>{
   const best=['money','snake','tulsi','areca','peacelily','jade','monstera','aloe'];
   const sowNow=SEEDS.filter(s=>s.sow.includes(MON)).slice(0,8);
   return hdrMain()+installBand()+`<div class="mt2"></div><button class="search" data-a="go" data-v="search">${I('search')}<span>Search tulsi, money plant, pots, seeds…</span></button>
-  <section class="hero"><div class="tx"><h1>${esc(BRAND.tagline)}</h1><p>Plants, pots and seeds from Indian nurseries, delivered. Not sure what fits your space? Scan it.</p></div>${Art.hero({cls:'art'})}<div class="cta"><button class="btn alt" data-a="tab" data-t="scan">${I('scan')}Scan my space</button><button class="btn ghost" data-a="tab" data-t="shop" style="background:rgba(255,255,255,.14);color:#fff">Shop plants</button></div></section>
+  <section class="hero"><div class="tx"><h1>${esc(BRAND.tagline)}</h1><p>Plants, pots and seeds from Indian nurseries, delivered. Not sure what fits your space? Scan it.</p></div>${Art.hero({cls:'art'})}<div class="cta"><button class="btn alt" data-a="tab" data-t="scan">${I('scan')}Scan my space</button><button class="btn ghost" data-a="tab" data-t="shop" style="background:rgba(255,255,255,.14);color:#fff">Shop plants</button></div></section>${remindBand()}
   <div class="sec"><h2>Shop by need</h2></div>
   <div class="scroll">${map(CATS,([n,f,p])=>`<button class="cat" data-a="cat" data-f="${f}"><span class="bub">${p?Art.plant(p):f==='@seeds'?Art.packet(SE['s-genda']):Art.potOnly('warli')}</span>${n}</button>`)}</div>
   <div class="sec"><h2>Bestsellers</h2><a href="#" data-a="tab" data-t="shop">See all</a></div>
-  <div class="scroll">${map(best,id=>pcard('plant',id))}</div>
+  <div class="scroll">${map(best,id=>pcard('plant',id))}</div>${forYouRow()}
   <div class="sec"><h2>Starter kits</h2><span class="small muted">Save up to 15%</span></div>
   <div class="scroll">${map(KITS,k=>kitCard(k))}</div>
+  <div class="sec"><h2>DIY & gift ideas</h2><a href="#" data-a="go" data-v="diy">See all</a></div>
+  <div class="scroll">${map(IDEAS,ideaCard)}</div>
   <div class="mt"></div><button class="band p" data-a="go" data-v="gift" style="width:calc(100% - 32px);text-align:left"><div class="bx">${Art.plant('anthurium','white')}</div><div><h3>Gift a plant</h3><p>Griha Pravesh, birthdays, Diwali, Rakhi — with a handwritten card and no prices inside.</p></div></button>
   <div class="mt"></div><button class="band g" data-a="go" data-v="season" style="width:calc(100% - 32px);text-align:left"><div class="bx">${Art.packet(SE['s-palak'])}</div><div><h3>It's ${SEASON.n.toLowerCase()} — here's what to plant</h3><p>${SEASON.months}: ${SEASON.plant.slice(0,3).map(id=>PL[id].n.split(' (')[0]).join(', ')} and ${sowNow.length} seeds to sow this month.</p><span class="link">Open the season guide →</span></div></button>
   <div class="mt"></div>${vastuBand()}
@@ -1612,11 +1659,11 @@ V.cart=()=>{if(!S.cart.length)return hdrSub('Your cart')+`<div class="empty">${A
   <div class="card" style="margin:20px 16px 0"><div class="sumr"><span>Items</span><span>${rs(t.sub)}</span></div>${t.disc?`<div class="sumr" style="color:var(--brand)"><span>Discount</span><span>−${rs(t.disc)}</span></div>`:''}<div class="sumr"><span>Delivery</span><span>${t.del?rs(t.del):'Free'}</span></div><div class="sumr t"><span>Total</span><span>${rs(t.total)}</span></div>${t.del?`<p class="small muted mt2">Add ${rs(499-(t.sub-t.disc))} more for free delivery.</p>`:''}</div>
   <div class="pad mt"><button class="btn w" data-a="go" data-v="checkout">Checkout · ${rs(t.total)}</button></div><p class="note mt2" style="text-align:center">Every plant ships with a care card and a 7-day healthy-plant promise.</p>`};
 
-V.checkout=()=>{const t=totals(),a=S.addr,e=eta(a.pin);
+V.checkout=()=>{const t=totals(),a=coAddr(),e=eta(a.pin);
   return hdrSub('Checkout')+`<div class="sec" style="margin-top:12px"><h3>${R.co.gift?'Recipient’s details':'Deliver to'}</h3></div>
-  <label class="fld"><span>${R.co.gift?'Recipient’s name':'Full name'}</span><input class="inp" id="cName" value="${esc(a.name||S.tester)}" autocomplete="name"></label>
+  <label class="fld"><span>${R.co.gift?'Recipient’s name':'Full name'}</span><input class="inp" id="cName" value="${esc(a.name||(R.co.gift?'':S.tester))}" autocomplete="name"></label>
   <label class="fld"><span>Mobile number</span><input class="inp" id="cPhone" inputmode="tel" maxlength="10" value="${esc(a.phone)}" placeholder="10-digit mobile" autocomplete="tel"></label>
-  <div class="row" style="gap:0"><label class="fld" style="flex:1;padding-right:6px"><span>Pincode</span><input class="inp" id="cPin" inputmode="numeric" maxlength="6" value="${esc(a.pin)}"></label><label class="fld" style="flex:1;padding-left:6px"><span>City</span><input class="inp" id="cCity" value="${esc(a.city||S.city)}"></label></div>
+  <div class="row" style="gap:0"><label class="fld" style="flex:1;padding-right:6px"><span>Pincode</span><input class="inp" id="cPin" inputmode="numeric" maxlength="6" value="${esc(a.pin)}"></label><label class="fld" style="flex:1;padding-left:6px"><span>City</span><input class="inp" id="cCity" value="${esc(a.city||(R.co.gift?'':S.city))}"></label></div>
   <label class="fld"><span>House, street, area</span><textarea class="inp" id="cAddr" style="min-height:72px">${esc(a.addr)}</textarea></label>
   <p class="note mt2" id="cEta">${e?esc(e.txt):'Enter your pincode to see the delivery date'}</p>
   <div class="sec"><h3>Gift options</h3></div><div class="pad"><button class="opt${R.co.gift?' on':''}" data-a="gift" style="width:100%">${I('gift')} This is a gift — wrap, handwritten card, no prices inside (+₹49)</button></div>${R.co.gift?giftFields():''}
@@ -1635,7 +1682,7 @@ const allPet=p=>p.items.every(([pid])=>PL[pid].pet);
 function pinCard(id){const p=PI[id];return`<div class="pin"><button data-a="pin" data-id="${id}" style="display:block;width:100%;text-align:left"><span class="ps">${Art.scene(p)}</span><div class="pt">${esc(p.t)}</div><div class="pm">${p.items.length} plants · look from ${rs(lookTotal(p)*.9)}</div></button><button class="heart${S.saved.includes(id)?' on':''}" data-a="savepin" data-id="${id}" aria-label="Save idea">${I('heart')}</button></div>`}
 const IFILT=[['all','All'],['Indoor','Indoor'],['Outdoor','Balcony & terrace'],['Living room','Living room'],['Bedroom','Bedroom'],['Kitchen','Kitchen'],['Work desk','Work desk'],['small','Small spaces'],['pet','Pet-friendly'],['fest','Festive'],['vastu','Vastu'],['saved','Saved']];
 function pinsFor(f){return PINS.filter(p=>f==='all'||(f==='Indoor'?p.io==='Indoor':f==='Outdoor'?p.io!=='Indoor':f==='small'?(p.small||['Work desk','Kitchen','Bathroom','Hallway'].includes(p.sp)):f==='pet'?allPet(p):f==='fest'?p.fest:f==='vastu'?p.vastu:f==='saved'?S.saved.includes(p.id):p.sp===f))}
-V.inspire=()=>{const list=pinsFor(R.insp);return hdrTitle('Get inspired')+`<p class="note" style="margin:-4px 0 12px">Decor ideas for Indian homes, balconies and terraces. Tap any idea to shop the look or try it in your own space.</p><div class="chips">${map(IFILT,([k,n])=>`<button class="chip${R.insp===k?' on':''}" data-a="insp" data-f="${k}">${n}</button>`)}</div><div class="mt2"></div>${list.length?`<div class="mason">${map(list,p=>pinCard(p.id))}</div>`:`<div class="empty">${R.insp==='saved'?'Tap the heart on any idea to save it here.':'No ideas here yet.'}</div>`}`};
+V.inspire=()=>{const list=pinsFor(R.insp);return hdrTitle('Get inspired')+`<p class="note" style="margin:-4px 0 12px">Decor ideas for Indian homes, balconies and terraces. Tap any idea to shop the look or try it in your own space.</p><button class="band g" data-a="go" data-v="diy" style="width:calc(100% - 32px);text-align:left;margin-bottom:14px"><div class="bx">${Art.care(CA['c-diy-tubes'])}</div><div><h3>DIY & gift ideas</h3><p>Test-tube fridge magnets, kulhad planters, seed paper cards and more.</p><span class="link">Make something →</span></div></button><div class="chips">${map(IFILT,([k,n])=>`<button class="chip${R.insp===k?' on':''}" data-a="insp" data-f="${k}">${n}</button>`)}</div><div class="mt2"></div>${list.length?`<div class="mason">${map(list,p=>pinCard(p.id))}</div>`:`<div class="empty">${R.insp==='saved'?'Tap the heart on any idea to save it here.':'No ideas here yet.'}</div>`}`};
 function openPin(id){const p=PI[id],tot=lookTotal(p);
   openSheet(`<div style="padding:0 16px"><div style="border-radius:18px;overflow:hidden">${Art.scene(p)}</div><h2 class="mt2">${esc(p.t)}</h2><div class="row mt2" style="flex-wrap:wrap;gap:6px"><span class="pill">${esc(p.io)}</span><span class="pill">${esc(p.sp)}</span>${allPet(p)?'<span class="pill">Pet-friendly</span>':''}</div><h3 class="mt">Why it works</h3><ul class="tips" style="padding:0 0 0 18px">${map(p.tips,t=>`<li>${esc(t)}</li>`)}</ul><h3 class="mt">Shop this look</h3></div>
   ${map(p.items,([pid,pot])=>`<button class="li" data-a="open" data-k="plant" data-id="${pid}" data-pot="${pot}"><span class="th ${bgc('plant',pid)}">${Art.plant(pid,pot)}</span><span class="mid"><b>${esc(PL[pid].n)}</b><small>in ${esc(PO[pot].n)}</small></span><b>${rs(plantPrice(pid,'S')+potPrice(pot,'S'))}</b></button>`)}
@@ -1785,11 +1832,121 @@ function giftCard(pid){const c=R.co;return`<div class="giftcard"><div class="gc-
 function giftFields(){const c=R.co,tm=new Date(Date.now()+864e5).toISOString().slice(0,10);const first=S.cart.find(l=>l.k==='plant');
   return`<label class="fld"><span>Occasion</span><select class="inp" id="cOcc">${map(OCCASIONS,([k,n])=>`<option value="${k}"${c.occ===k?' selected':''}>${n}</option>`)}</select></label><label class="fld"><span>Message for the card</span><textarea class="inp" id="cMsg" maxlength="200" placeholder="e.g. Congratulations on your new home!">${esc(c.msg)}</textarea></label><label class="fld"><span>From</span><input class="inp" id="cFrom" value="${esc(c.from)}" placeholder="Your name"></label><label class="fld"><span>Deliver on</span><input class="inp" id="cDate" type="date" min="${tm}" value="${esc(c.date||tm)}"></label>${giftCard(first&&first.id)}`}
 V.gift=c=>{const occ=c.o||R.co.occ||'housewarming',o=OCCASIONS.find(x=>x[0]===occ);const hamper=occ==='diwali'?KITS.find(k=>k.gift):null;
-  return hdrSub('Gift a plant')+`<p class="note">Living gifts that last longer than flowers. Every gift comes wrapped, with a handwritten card and no prices inside.</p>
+  return hdrSub('Gift a plant')+(upcoming(60).length?`<div class="card" style="margin:0 16px 12px"><h3>Coming up</h3>${map(upcoming(60).slice(0,3),u=>`<p class="small mt2"><b>${esc(u.who||'Someone special')}</b> · ${DOCC_N[u.occ]||'special day'} · ${u.in===0?'today':u.in===1?'tomorrow':'in '+u.in+' days'}</p>`)}</div>`:'')+`<p class="note">Living gifts that last longer than flowers. Every gift comes wrapped, with a handwritten card and no prices inside.</p>
   <div class="sec"><h3>Pick the occasion</h3></div><div class="chips wrap">${map(OCCASIONS,([k,n])=>`<button class="chip${k===occ?' on':''}" data-a="gocc" data-o="${k}">${n}</button>`)}</div>
   <div class="sec"><h3>Gifts for ${esc(o[1])}</h3></div>${hamper?`<div class="scroll">${kitCard(hamper)}</div><div class="mt2"></div>`:''}`+
   map(o[2],pid=>`<div class="li"><button class="th ${bgc('plant',pid)}" data-a="open" data-k="plant" data-id="${pid}">${PH[pid]?phImg(pid):Art.plant(pid)}</button><div class="mid"><b>${esc(PL[pid].n)}</b><small>${esc(PL[pid].s.split('.')[0])}.</small></div><button class="btn sm" data-a="giftadd" data-id="${pid}" data-o="${occ}">Gift from ${rs(plantPrice(pid,'S'))}</button></div>`)+
-  `<div class="card" style="margin:20px 16px 0"><h3>Gifting for a team or a wedding?</h3><p class="small muted mt2">Bulk return gifts, Diwali hampers and welcome kits with custom tags.</p><button class="btn ghost sm mt2" data-a="go" data-v="services">See corporate gifting</button></div>`};
+  `<div class="sec"><h3>Make it yourself</h3><a href="#" data-a="go" data-v="diy">All ideas</a></div><div class="scroll">${map(IDEAS.filter(x=>x.tags.includes('gift')||x.tags.includes('return')),ideaCard)}</div>
+  <div class="card" style="margin:20px 16px 0"><h3>Gifting for a team or a wedding?</h3><p class="small muted mt2">Bulk return gifts, Diwali hampers and welcome kits with custom tags.</p><button class="btn ghost sm mt2" data-a="go" data-v="services">See corporate gifting</button></div>`};
+
+/* ---------- DIY & gift ideas ---------- */
+const TAGN={gift:'Gifts',return:'Return gifts',home:'Griha Pravesh',diwali:'Diwali',kids:'With kids',kitchen:'Kitchen'};
+const IDEA_TAGS=[['all','All ideas'],...Object.entries(TAGN)];
+const IDEAS=[
+ {id:'tubes',n:'Test-tube fridge magnets',h:'टेस्ट ट्यूब फ्रिज मैग्नेट',kit:'c-diy-tubes',lvl:'Easy',time:'15 min',occ:'housewarming',tags:['gift','home','kids','return'],
+  why:'Money plant cuttings grow roots right on your fridge door. A living fridge magnet that costs less than a bouquet and lasts for years.',
+  need:['3 plastic test tubes (they won’t break if they fall)','A magnetic tube strip or strong fridge magnets','3 money plant cuttings, each 10–12 cm with 2–3 nodes','Water, plus jute or ribbon to decorate'],
+  steps:['Cut 10–12 cm pieces of money plant just below a node — the small bump where a leaf joins the stem.','Pull off the lowest leaf so no leaf sits in the water.','Fill each tube three-quarters with water and put one cutting in each.','Fix the tubes to the magnetic strip and stick it on the fridge door, where some daylight reaches.','Top up the water every few days and change it once a week. White roots show up in 2–3 weeks.'],
+  care:['Use the fridge door, not the sides or back — those get warm.','Money plant is toxic to cats and dogs, so keep it out of their reach.'],
+  shop:[['plant','money'],['care','c-feed']]},
+ {id:'rack',n:'Hanging test-tube rack',h:'टेस्ट ट्यूब वॉल रैक',kit:'c-diy-rack',lvl:'Easy',time:'20 min',occ:'housewarming',tags:['gift','home','kitchen'],
+  why:'Five tubes on a wooden strip turn any window into a small plant nursery. Root money plant, pudina or syngonium cuttings, then pot them up as they grow.',
+  need:['A wooden strip with 5 tube holders','5 plastic test tubes','Jute rope to hang it','Cuttings of money plant, syngonium or pudina'],
+  steps:['Tie the jute rope to both ends of the strip and hang it from a window latch or a nail.','Slide the tubes into the holders and fill them three-quarters with water.','Put one cutting in each tube, with at least one node under water.','Change the water every week so it stays clear.','When the roots are 3–5 cm long, move the cutting into a small pot of soil.'],
+  care:['A bright window is best; keep it out of harsh afternoon sun.','Pudina roots the fastest, often within a week or two.'],
+  shop:[['plant','money'],['plant','syngonium'],['plant','pudina']]},
+ {id:'kulhad',n:'Kulhad succulent return gifts',h:'कुल्हड़ प्लांटर',kit:'c-diy-kulhad',lvl:'Easy',time:'30 min',occ:'thanks',tags:['return','gift','diwali'],
+  why:'Mitti ke kulhad with a little jade make the most desi return gifts for weddings, pujas and birthday parties.',
+  need:['Clay kulhads','Succulent mix, or potting mix with a little sand','Jade or other succulent cuttings','White pebbles','Jute and name tags'],
+  steps:['Leave the jade cuttings to dry for 2 days so the cut end seals.','Put a spoon of pebbles at the bottom of each kulhad — it has no drainage hole.','Fill it with succulent mix, leaving 1 cm at the top.','Push a cutting 2 cm deep and press the soil around it.','Top with white pebbles, then tie a jute bow and a name tag.'],
+  care:['Water only a spoon or two once a week, because kulhads have no hole.','Give it bright light; a windowsill is ideal.'],
+  shop:[['plant','jade'],['care','c-pebbles'],['care','c-mix']]},
+ {id:'jar',n:'Jar garden',h:'जार गार्डन',kit:'c-diy-jar',lvl:'Medium',time:'45 min',occ:'birthday',tags:['gift','kids'],
+  why:'A tiny green world in a glass jar. Lovely on a work desk, and a fun Sunday activity with kids.',
+  need:['A wide-mouth glass jar','Small pebbles','A spoon of activated charcoal','Potting mix','2 small plants, like peperomia or baby syngonium','Moss and a few small stones'],
+  steps:['Add a 2–3 cm layer of pebbles at the bottom.','Sprinkle a thin layer of charcoal over them; it keeps the jar fresh.','Add 5–6 cm of potting mix.','Make holes with a spoon and plant, with the smallest plant in front.','Press the soil, add moss and stones, wipe the glass clean and mist lightly.'],
+  care:['Keep the lid off.','Use bright light but no direct sun, because glass heats up quickly.','Water a few spoons only when the soil looks dry.'],
+  shop:[['plant','peperomia'],['plant','syngonium'],['care','c-pebbles']]},
+ {id:'koke',n:'Kokedama moss ball',h:'कोकेदामा',kit:'c-diy-koke',lvl:'Medium',time:'40 min',occ:'housewarming',tags:['gift','home'],
+  why:'A Japanese idea that suits Indian homes: the plant grows from a ball of soil wrapped in moss and jute. Hang it, or sit it on a diya plate.',
+  need:['Kokedama soil (potting mix with a little cocopeat)','Sheet moss','Jute twine','A money plant or syngonium'],
+  steps:['Wet the soil mix and squeeze it into a ball the size of an orange.','Take the plant out of its pot, loosen the roots and press the ball around them.','Wrap moss all around the ball.','Wind the twine round and round to hold the moss, and tie a loop if you want to hang it.','Hang it, or set it on a plate.'],
+  care:['Water by dunking the ball in a bucket for 10 minutes when it feels light.','Let it drip dry before hanging it back up.'],
+  shop:[['plant','money'],['plant','syngonium'],['care','c-coco']]},
+ {id:'coco',n:'Coconut shell planter',h:'नारियल खोल प्लांटर',kit:'c-diy-coco',lvl:'Easy',time:'30 min',occ:'diwali',tags:['home','kids','return'],
+  why:'After the puja, don’t throw the nariyal shell away. It makes a free, earthy planter for tulsi, a succulent or money plant.',
+  need:['Half a coconut shell, cleaned','A nail or drill for a drainage hole','Jute rope','Potting mix','A small plant'],
+  steps:['Scrape out any leftover coconut and dry the shell in the sun for 2 days.','Make a small drainage hole at the bottom. Kids: ask an adult to do this part.','Make 3 small holes near the rim and thread jute through them to hang it.','Fill with potting mix, plant, and water gently.'],
+  care:['Shells dry out fast, so check the soil every 2–3 days in summer.','Hang it where it gets morning sun.'],
+  shop:[['plant','tulsi'],['plant','money'],['care','c-mix']]},
+ {id:'seed',n:'Seed paper cards',h:'बीज वाले कार्ड',kit:'c-diy-seed',lvl:'Medium',time:'1 hr + 2 days drying',occ:'birthday',tags:['gift','kids','diwali','return'],
+  why:'A card they can plant. Once they’ve read it, they soak it, sow it in a pot, and marigolds come up.',
+  need:['Old paper, like notebook pages or newspaper (not glossy)','Water and a mixer','Genda (marigold) seeds','A cotton cloth or net','Cookie cutters (optional)'],
+  steps:['Tear the paper into small pieces and soak them overnight.','Blend into a pulp, then squeeze out the extra water.','Mix in the seeds by hand. Don’t put the seeds in the mixer.','Press the pulp thin on the cloth and shape it with cutters.','Dry for 2 days in the shade, then write your message.'],
+  care:[`To plant it: soak the card for 10 minutes, lay it on soil, cover with half a centimetre of soil and keep it moist. Genda sprouts in about ${SE['s-genda'].g}.`],
+  shop:[['seed','s-genda'],['seed','s-tulsi']]},
+ {id:'herb',n:'Windowsill herb kit',h:'रसोई हर्ब किट',kit:'c-diy-herb',lvl:'Easy',time:'20 min',occ:'housewarming',tags:['kitchen','home','gift'],
+  why:'Fresh dhaniya for dal, methi for parathas and tulsi for chai, grown right on the kitchen window. A thoughtful Griha Pravesh gift.',
+  need:['A tray with 3 small pots','Potting mix','Dhaniya, methi and tulsi seeds','A spray bottle'],
+  steps:['Crush the dhaniya seeds lightly into halves; they sprout better.','Fill the pots with potting mix.','Sow dhaniya and methi thinly and cover with a thin layer of soil.','Scatter the tulsi seeds on top and just press them in; they need light to sprout.','Mist every day until the seedlings appear.'],
+  care:[`Methi is ready to pick in ${SE['s-methi'].hv}, dhaniya in ${SE['s-dhaniya'].hv}.`,'Give it at least 4 hours of sunlight.'],
+  shop:[['seed','s-dhaniya'],['seed','s-methi'],['seed','s-tulsi']]}
+];
+const ideaCard=x=>`<button class="idc" data-a="idea" data-id="${x.id}"><span class="ia">${Art.care(CA[x.kit])}</span><span class="it"><b>${esc(x.n)}</b><span class="hi" lang="hi">${esc(x.h)}</span><small>${esc(x.lvl)} · ${esc(x.time)}</small></span></button>`;
+V.diy=()=>{const f=R.diyf||'all',list=IDEAS.filter(x=>f==='all'||x.tags.includes(f));
+  return hdrSub('DIY & gift ideas')+`<p class="note">Creative ways to grow and gift plants. Make them yourself, or order the kit and we’ll send everything you need.</p><div class="chips mt2">${map(IDEA_TAGS,([k,n])=>`<button class="chip${f===k?' on':''}" data-a="diyf" data-f="${k}">${n}</button>`)}</div><div class="mt2"></div><div class="idgrid">${map(list,ideaCard)}</div>
+  <div class="card" style="margin:20px 16px 0"><h3>Made something?</h3><p class="small muted mt2">Tell us what you made, or an idea you’d like to see here.</p><button class="btn ghost sm mt2" data-a="fb">Share in feedback</button></div>`};
+V.idea=c=>{const x=IDEAS.find(i=>i.id===c.id)||IDEAS[0],k=CA[x.kit];
+  return hdrSub(x.n)+`<div class="pdart" style="min-height:0;padding:18px 0 4px"><div style="width:58%;margin:0 auto">${Art.care(k)}</div></div>
+  <div class="pad mt pd"><h1>${esc(x.n)}</h1><p class="mt2 hiline" lang="hi">${esc(x.h)}</p><div class="row mt2" style="flex-wrap:wrap;gap:6px"><span class="pill">${esc(x.lvl)}</span><span class="pill">${esc(x.time)}</span>${map(x.tags,t=>`<span class="pill">${esc(TAGN[t])}</span>`)}</div><p class="mt2">${esc(x.why)}</p></div>
+  <div class="sec"><h3>What you need</h3></div><ul class="need">${map(x.need,t=>`<li>${I('check')}<span>${esc(t)}</span></li>`)}</ul>
+  <div class="sec"><h3>How to make it</h3></div><ol class="steps">${map(x.steps,t=>`<li><span>${esc(t)}</span></li>`)}</ol>
+  <div class="sec"><h3>Care and safety</h3></div><ul class="tips">${map(x.care,t=>`<li>${esc(t)}</li>`)}</ul>
+  <div class="sec"><h3>Or get the kit</h3></div><button class="li" data-a="open" data-k="care" data-id="${k.id}"><span class="th s">${Art.care(k)}</span><span class="mid"><b>${esc(k.n)}</b><small>${esc(k.d)}</small></span><b>${rs(k.pr)}</b></button>
+  ${map(x.shop,([kk,id])=>`<button class="li" data-a="open" data-k="${kk}" data-id="${id}"><span class="th ${bgc(kk,id)}">${thumb(kk,id)}</span><span class="mid"><b>${esc(KIND[kk][id].n)}</b><small>${kk==='plant'?esc(PL[id].h):kk==='seed'?'Seed packet':'Garden care'}</small></span><span class="small muted">${rs(KIND[kk][id].pr)}</span></button>`)}
+  <div style="height:90px"></div><div class="buybar"><button class="btn ghost" data-a="ideagift" data-id="${x.id}">${I('gift')}Gift it</button><button class="btn" data-a="ideakit" data-id="${x.id}" style="flex:1">Add kit · ${rs(k.pr)}</button></div>`};
+
+/* ---------- profile (saved on this phone; shared with the shop only if the customer says yes) ---------- */
+const SPACES=[['balcony','Balcony'],['window','Windowsill'],['indoor','Indoor room'],['terrace','Terrace or garden'],['office','Office desk']];
+const LIGHTS=[[1,'Low · far from windows'],[2,'Medium · near a window'],[3,'Bright · beside a window'],[4,'Direct sun · 4+ hours']];
+const PETS=[['none','No pets'],['cat','Cat'],['dog','Dog'],['both','Cat and dog']];
+const EXP=[['new','New to plants'],['some','Kept a few alive'],['pro','Plant expert']];
+const DOCC=[['birthday','Birthday'],['anniversary','Anniversary'],['thanks','Other']];
+const DOCC_N={birthday:'birthday',anniversary:'anniversary',thanks:'special day'};
+function pfDraft(){const p=S.profile||{},a=S.addr||{};return{name:p.name||S.tester||a.name||'',phone:p.phone||a.phone||'',city:p.city||a.city||S.city||'',pin:p.pin||a.pin||'',addr:p.addr||a.addr||'',space:[...(p.space||[])],light:p.light||0,pets:p.pets||'',exp:p.exp||'',dates:(p.dates||[]).map(d=>({...d})),share:!!p.share}}
+const pfDone=d=>{const parts=[d.name,/^[6-9]\d{9}$/.test(d.phone||''),d.pin&&d.addr,(d.space||[]).length,d.light,d.pets,d.exp,(d.dates||[]).length];return Math.round(parts.filter(Boolean).length/parts.length*100)};
+const pfSub=()=>{const p=S.profile||{};return p.at?`${pfDone(p)}% complete`:'Address, space, special dates'};
+V.profile=()=>{const d=R.pf||(R.pf=pfDraft());
+  const ch=(list,val,act,multi)=>`<div class="chips wrap">${map(list,([k,n])=>`<button class="chip${(multi?val.includes(k):String(val)===String(k))?' on':''}" data-a="${act}" data-v="${k}">${esc(n)}</button>`)}</div>`;
+  return hdrSub('My profile')+`<p class="note">Saved on this phone. It fills in checkout for you and picks plants that suit your home.</p>
+  <div class="sec"><h3>About you</h3></div>
+  <label class="fld"><span>Your name</span><input class="inp" id="pfName" value="${esc(d.name)}" autocomplete="name"></label>
+  <label class="fld"><span>WhatsApp number</span><input class="inp" id="pfPhone" inputmode="tel" maxlength="10" value="${esc(d.phone)}" placeholder="10-digit mobile" autocomplete="tel"></label>
+  <div class="sec"><h3>Delivery address</h3></div>
+  <div class="row" style="gap:0"><label class="fld" style="flex:1;padding-right:6px"><span>Pincode</span><input class="inp" id="pfPin" inputmode="numeric" maxlength="6" value="${esc(d.pin)}"></label><label class="fld" style="flex:1;padding-left:6px"><span>City</span><input class="inp" id="pfCity" value="${esc(d.city)}"></label></div>
+  <label class="fld"><span>House, street, area</span><textarea class="inp" id="pfAddr" style="min-height:72px">${esc(d.addr)}</textarea></label>
+  <div class="sec"><h3>Where will your plants live?</h3><small class="muted">Pick all that apply</small></div>${ch(SPACES,d.space,'pfspace',1)}
+  <div class="sec"><h3>How much sunlight?</h3></div>${ch(LIGHTS,d.light,'pflight')}
+  <div class="sec"><h3>Pets at home</h3></div>${ch(PETS,d.pets,'pfpets')}
+  <div class="sec"><h3>Plant experience</h3></div>${ch(EXP,d.exp,'pfexp')}
+  <div class="sec"><h3>Special dates</h3><small class="muted">We’ll remind you to send a plant</small></div>
+  ${map(d.dates,(x,i)=>`<div class="dt"><label class="fld"><span>Who</span><input class="inp pfdw" data-i="${i}" value="${esc(x.who)}" placeholder="e.g. Mummy"></label><label class="fld"><span>Occasion</span><select class="inp pfdo" data-i="${i}">${map(DOCC,([k,n])=>`<option value="${k}"${x.occ===k?' selected':''}>${n}</option>`)}</select></label><button class="ib" data-a="pfdel" data-i="${i}" aria-label="Remove this date">${I('trash')}</button><label class="fld dd"><span>Date</span><input class="inp pfdd" data-i="${i}" type="date" value="${esc(x.date||'')}"></label></div>`)}
+  <div class="pad"><button class="btn ghost sm" data-a="pfadd">${I('plus')}Add a date</button></div>
+  <div class="pad mt2"><button class="opt${d.share?' on':''}" data-a="pfshare" style="width:100%">${I(d.share?'check':'phone')}Share my profile with ${esc(BRAND.name)} for order updates and gift reminders on WhatsApp</button></div>
+  <div style="height:90px"></div><div class="buybar"><div class="tot"><b>${pfDone(d)}% complete</b><small>${d.share?'Shared with '+esc(BRAND.name):'Stays on this phone'}</small></div><button class="btn" data-a="pfsave">Save profile</button></div>`};
+AFTER.profile=()=>{const d=R.pf;if(!d)return;const b=(id,k)=>{const el=$('#'+id);if(el)el.oninput=()=>d[k]=el.value};b('pfName','name');b('pfPhone','phone');b('pfPin','pin');b('pfCity','city');b('pfAddr','addr');
+  document.querySelectorAll('.pfdw').forEach(el=>el.oninput=()=>d.dates[+el.dataset.i].who=el.value);document.querySelectorAll('.pfdo').forEach(el=>el.onchange=()=>d.dates[+el.dataset.i].occ=el.value);document.querySelectorAll('.pfdd').forEach(el=>el.onchange=()=>d.dates[+el.dataset.i].date=el.value)};
+function forYou(){const p=S.profile||{},sp=p.space||[];if(!p.light&&!sp.length&&!p.pets)return[];
+  const out=sp.some(s=>['balcony','terrace'].includes(s)),inn=!sp.length||sp.some(s=>['indoor','window','office'].includes(s));
+  let a=PLANTS.filter(x=>(inn&&x.w!=='out')||(out&&x.w!=='in'));if(p.light)a=a.filter(x=>x.L[0]<=p.light&&p.light<=x.L[1]);if(p.pets&&p.pets!=='none')a=a.filter(x=>x.pet);
+  if(p.exp==='new')a=a.filter(x=>x.d==='Easy').concat(a.filter(x=>x.d!=='Easy'));return a.slice(0,8).map(x=>x.id)}
+const forYouRow=()=>{const ids=forYou();return ids.length?`<div class="sec"><h2>Picked for your home</h2><a href="#" data-a="profile">Edit</a></div><div class="scroll">${map(ids,id=>pcard('plant',id))}</div>`:''};
+function daysTo(iso){const m=/^\d{4}-(\d{2})-(\d{2})$/.exec(iso||'');if(!m)return null;const now=new Date();now.setHours(0,0,0,0);let t=new Date(now.getFullYear(),+m[1]-1,+m[2]);if(t<now)t=new Date(now.getFullYear()+1,+m[1]-1,+m[2]);return Math.round((t-now)/864e5)}
+const upcoming=(days=30)=>((S.profile&&S.profile.dates)||[]).map(x=>({...x,in:daysTo(x.date)})).filter(x=>x.in!=null&&x.in<=days).sort((a,b)=>a.in-b.in);
+const remindBand=()=>{const u=upcoming()[0];if(!u)return'';const when=u.in===0?'today':u.in===1?'tomorrow':`in ${u.in} days`;
+  return`<div class="mt"></div><button class="band p" data-a="giftfor" data-o="${u.occ}" style="width:calc(100% - 32px);text-align:left"><div class="bx">${Art.plant(u.occ==='anniversary'?'rose':'anthurium','white')}</div><div><h3>${esc(u.who||'Someone special')}’s ${DOCC_N[u.occ]||'special day'} is ${when}</h3><p>Send a living gift with a handwritten card. Order a few days early so it arrives on time.</p><span class="link">Pick a gift →</span></div></button>`};
+const coAddr=()=>{const p=S.profile||{};if(R.co.gift)return R.co.to||{};if(p.addr||p.phone)return{name:p.name||S.tester,phone:p.phone,pin:p.pin,city:p.city,addr:p.addr};return S.addr||{}};
+
 const TRACK=[['Order placed',0,'We’ve received your order'],['Packed with care',2,'Watered, wrapped in plant-safe packaging'],['Shipped',5,'On its way from our nursery'],['Out for delivery',8,'Arriving today'],['Delivered',11,'Enjoy your plants! Care tips are in My Garden']];
 const trackStep=o=>{if(HOST.on)return o.cancel?0:Math.min(4,o.hs||0);const m=(Date.now()-o.at)/6e4;let i=0;TRACK.forEach((t,j)=>{if(m>=t[1])i=j});return i};
 V.order=c=>{const o=S.orders.find(x=>x.id===c.id);if(!o)return hdrSub('Order')+`<div class="empty">Order not found.</div>`;const st=trackStep(o);
@@ -1826,8 +1983,8 @@ async function readCompass(cb){const DOE=window.DeviceOrientationEvent;if(!DOE){
   setTimeout(()=>{if(!done){off();toast('Couldn’t read the compass — tap a direction instead')}},3000)}
 
 /* ---------- me, garden, doctor, season, services ---------- */
-V.me=()=>{const g=S.garden.length;const tiles=[['garden','leaf','My Garden',g?`${g} plant${g>1?'s':''} · watering reminders`:'Watering reminders'],['doctor','doc','Plant Doctor','Diagnose sad plants'],['season','cal','What to plant now',`${SEASON.n} guide`],['vastu','pin','Vastu guide','Which plant, which direction'],['inspire-saved','save','Saved ideas',`${S.saved.length} saved`],['wishlist','heart','Wishlist',`${S.wish.length} items`],['orders','box','Orders',`${S.orders.length} placed`],['support','help','Help & support',(n=>n?`${n} open request${n>1?'s':''}`:'WhatsApp, FAQs, requests')(S.tickets.filter(t=>t.st!=='resolved').length)],['gift','gift','Gift a plant','Cards, wrap, any occasion'],['services','tool','Services','Mali, makeovers, gifting'],['@refer','users','Invite friends','Give ₹100, get ₹100'],['survey','chat','Give feedback','Tell us what to fix']];
-  return hdrTitle(`Hi${S.tester?', '+S.tester.split(' ')[0]:''}`)+`<div class="grid">${map(tiles,([v,ic,t,s])=>`<button class="tile" data-a="${v==='inspire-saved'?'savedideas':v==='@refer'?'refer':'go'}" data-v="${v}">${I(ic)}<b>${t}</b><small>${esc(s)}</small></button>`)}</div>
+V.me=()=>{const g=S.garden.length;const tiles=[['profile','user','My profile',pfSub()],['garden','leaf','My Garden',g?`${g} plant${g>1?'s':''} · watering reminders`:'Watering reminders'],['doctor','doc','Plant Doctor','Diagnose sad plants'],['season','cal','What to plant now',`${SEASON.n} guide`],['vastu','pin','Vastu guide','Which plant, which direction'],['inspire-saved','save','Saved ideas',`${S.saved.length} saved`],['wishlist','heart','Wishlist',`${S.wish.length} items`],['orders','box','Orders',`${S.orders.length} placed`],['support','help','Help & support',(n=>n?`${n} open request${n>1?'s':''}`:'WhatsApp, FAQs, requests')(S.tickets.filter(t=>t.st!=='resolved').length)],['gift','gift','Gift a plant','Cards, wrap, any occasion'],['diy','ideas','DIY & gift ideas','Test tubes, kulhads, seed cards'],['services','tool','Services','Mali, makeovers, gifting'],['@refer','users','Invite friends','Give ₹100, get ₹100'],['survey','chat','Give feedback','Tell us what to fix']];
+  return hdrTitle(`Hi${S.tester?', '+S.tester.split(' ')[0]:''}`)+remindBand()+`<div class="mt2"></div><div class="grid">${map(tiles,([v,ic,t,s])=>`<button class="tile" data-a="${v==='inspire-saved'?'savedideas':v==='@refer'?'refer':v==='profile'?'profile':'go'}" data-v="${v}">${I(ic)}<b>${t}</b><small>${esc(s)}</small></button>`)}</div>
   ${installBand()}<div class="card" style="margin:20px 16px 0"><h3>About this preview</h3><p class="small muted mt2">You're testing an early prototype of ${esc(BN)}. Plant data, prices, delivery dates and services are samples. Orders, wishlists and feedback are saved only on this device.</p><div class="row mt2" style="flex-wrap:wrap"><button class="btn ghost sm" data-a="animtoggle">Moving plants: ${S.anim?'On':'Off'}</button><button class="btn ghost sm" data-a="editname">Change my name</button><button class="btn line sm" data-a="reset">Reset demo data</button></div></div>`};
 V.wishlist=()=>hdrSub('Wishlist')+(S.wish.length?`<div class="grid mt2">${map(S.wish,w=>{const[k,id]=w.split(':');return KIND[k]&&KIND[k][id]?pcard(k,id):''})}</div>`:`<div class="empty">${Art.plant('peperomia','bluepottery')}<p class="mt2">Tap the heart on anything you like to save it here.</p></div>`);
 V.orders=()=>hdrSub('Orders')+(S.orders.length?map(S.orders,o=>`<button class="li" data-a="go" data-v="order" data-id="${esc(o.id)}"><span class="th">${thumb(o.items[0].k,o.items[0].id,o.items[0].pot)}</span><div class="mid"><b>Order ${esc(o.id)}</b><small>${new Date(o.at).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})} · ${o.items.reduce((a,l)=>a+l.qty,0)} items · ${rs(o.total)}</small><small>${esc(o.eta)}</small></div><span class="pill">${o.cancel?'Cancelled':esc(TRACK[trackStep(o)][0])}</span></button>`):`<div class="empty">No orders yet.</div>`);
@@ -1964,12 +2121,32 @@ addEventListener('resize',badgeSpace);setInterval(badgeSpace,1500);
 /* ---------- render ---------- */
 function render(top){const c=cur();$('#app').innerHTML=(V[c.v]||V.home)(c);
   const tabOf={home:'home',shop:'shop',scan:'scan',inspire:'inspire',me:'me'};document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===(tabOf[R.stack[0].v]||'home')));
-  const hideNav=['product','checkout'].includes(c.v);$('#nav').style.display=hideNav?'none':'';
+  const hideNav=['product','checkout','profile','idea'].includes(c.v);$('#nav').style.display=hideNav?'none':'';
   if(top)window.scrollTo(0,0);if(AFTER[c.v])AFTER[c.v](c);updateBadge();onScroll();armSway(document,true)}
 const onScroll=()=>{const h=document.querySelector('.hdr');if(h)h.classList.toggle('sc',scrollY>4)};addEventListener('scroll',onScroll,{passive:true});
 
 /* ---------- actions ---------- */
 const A={
+ idea:e=>go('idea',{id:e.dataset.id}),
+ diyf:e=>{R.diyf=e.dataset.f;render()},
+ ideakit:e=>{const x=IDEAS.find(i=>i.id===e.dataset.id);addCart({k:'care',id:x.kit})},
+ ideagift:e=>{const x=IDEAS.find(i=>i.id===e.dataset.id);if(addCart({k:'care',id:x.kit},true)!==false){R.co.gift=true;R.co.occ=x.occ;R.co.from=R.co.from||S.tester;go('checkout')}},
+ giftfor:e=>{R.co.occ=e.dataset.o;R.co.from=R.co.from||S.tester;go('gift',{o:e.dataset.o})},
+ profile:()=>{R.pf=pfDraft();go('profile')},
+ pfspace:e=>{const d=R.pf,k=e.dataset.v,i=d.space.indexOf(k);if(i<0)d.space.push(k);else d.space.splice(i,1);render()},
+ pflight:e=>{R.pf.light=+e.dataset.v;render()},
+ pfpets:e=>{R.pf.pets=e.dataset.v;render()},
+ pfexp:e=>{R.pf.exp=e.dataset.v;render()},
+ pfadd:()=>{R.pf.dates.push({who:'',occ:'birthday',date:''});render()},
+ pfdel:e=>{R.pf.dates.splice(+e.dataset.i,1);render()},
+ pfshare:()=>{R.pf.share=!R.pf.share;render()},
+ pfsave:()=>{const d=R.pf;d.name=(d.name||'').trim();d.phone=(d.phone||'').replace(/\D/g,'').slice(-10);
+   if(d.phone&&!/^[6-9]\d{9}$/.test(d.phone))return toast('Please enter a valid 10-digit mobile number');
+   if(d.pin&&!/^\d{6}$/.test(d.pin))return toast('Please enter a valid 6-digit pincode');
+   if(d.share&&!d.phone)return toast('Add your WhatsApp number to get reminders');
+   d.dates=d.dates.filter(x=>x.date);S.profile={...d,at:Date.now()};if(d.name)S.tester=d.name;if(d.city)S.city=d.city;save();
+   if(API&&d.share)api('profile',{profile:{name:d.name,phone:d.phone,city:d.city,pin:d.pin,space:d.space.map(k=>(SPACES.find(s=>s[0]===k)||[,k])[1]).join(', '),light:(LIGHTS.find(l=>l[0]===d.light)||[,''])[1],pets:(PETS.find(x=>x[0]===d.pets)||[,''])[1],exp:(EXP.find(x=>x[0]===d.exp)||[,''])[1],dates:d.dates.map(x=>`${x.who||'—'} · ${(DOCC.find(o=>o[0]===x.occ)||DOCC[2])[1]} · ${x.date}`).join('; ')}}).catch(()=>{});
+   R.pf=null;toast('Profile saved');back()},
  tab:e=>tab(e.dataset.t),go:e=>go(e.dataset.v,{id:e.dataset.id}),back:()=>back(),
  open:e=>{closeSheet();R.prod=null;go('product',{k:e.dataset.k,id:e.dataset.id,pot:e.dataset.pot})},
  wish:e=>{const key=e.dataset.k+':'+e.dataset.id,i=S.wish.indexOf(key);if(i<0){S.wish.push(key);toast('Saved to wishlist')}else S.wish.splice(i,1);save();render()},
